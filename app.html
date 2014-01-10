@@ -1,0 +1,47 @@
+<html>
+<head>
+    <link href="lib/codemirror/codemirror.css" rel="stylesheet">
+    <link href="app.css" rel="stylesheet">
+</head>
+<body>
+    <textarea id="textarea"></textarea>
+    <div class="actions">
+        <select id="themeSelector">
+            <option disabled>Pick a theme...</option>
+        </select>
+        <select id="modeSelector">
+            <option disabled>Pick a mode...</option>
+        </select>
+        <select id="shaderSelector">
+            <option disabled>Pick an effect...</option>
+        </select>
+        <button id="exportButton">Capture</button>
+    </div>
+
+    <script src="lib/three.js/three.min.js"></script>
+    <script src="lib/three.js/controls/EditorControls.js"></script>
+
+    <script src="lib/three.js/shaders/CopyShader.js"></script>
+    <script src="lib/three.js/shaders/RGBShiftShader.js"></script>
+    <script src="lib/three.js/shaders/HorizontalBlurShader.js"></script>
+    <script src="lib/three.js/shaders/VerticalBlurShader.js"></script>
+    <script src="lib/three.js/shaders/SepiaShader.js"></script>
+    <script src="lib/three.js/shaders/VignetteShader.js"></script>
+    <script src="lib/three.js/shaders/KaleidoShader.js"></script>
+    <script src="lib/three.js/shaders/FilmShader.js"></script>
+    <script src="lib/three.js/shaders/HorizontalTiltShiftShader.js"></script>
+    <script src="lib/three.js/shaders/VerticalTiltShiftShader.js"></script>
+
+    <script src="lib/three.js/postprocessing/EffectComposer.js"></script>
+    <script src="lib/three.js/postprocessing/RenderPass.js"></script>
+    <script src="lib/three.js/postprocessing/MaskPass.js"></script>
+    <script src="lib/three.js/postprocessing/ShaderPass.js"></script>
+
+    <script src="lib/typeface.js/cousine_regular.typeface.js"></script>
+
+    <script src="lib/codemirror/codemirror-compressed.js"></script>
+    <script src="lib/codemirror/overlay.js"></script>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -55,7 +55,7 @@ var renderer = new THREE.WebGLRenderer({
     antialias: true,
     preserveDrawingBuffer: true
 });
-renderer.setSize(SCENE_SIZE, SCENE_SIZE);
+renderer.setSize(SCENE_SIZE / devicePixelRatio, SCENE_SIZE / devicePixelRatio);
 
 var composer = new THREE.EffectComposer(renderer);
 

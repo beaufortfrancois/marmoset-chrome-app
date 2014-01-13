@@ -23,7 +23,7 @@ body {
 }
 
 button {
-    background-color: #999;
+    background-color: #777;
     border: none;
     border-radius: 2px;
     color: white;
@@ -35,7 +35,7 @@ button {
 }
 
 button:active {
-    background-color: #777;
+    background-color: #555;
 }
 
 canvas {
@@ -48,7 +48,7 @@ canvas {
 }
 
 select {
-    background-color: #EFEFEF;
+    background-color: #DDD;
     border: none;
     border-radius: 2px;
     height: 28px;

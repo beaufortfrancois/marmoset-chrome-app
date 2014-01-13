@@ -53,7 +53,8 @@ var camera = new THREE.PerspectiveCamera(75, 1, 10, SCENE_SIZE);
 
 var renderer = new THREE.WebGLRenderer({
     antialias: true,
-    preserveDrawingBuffer: true
+    preserveDrawingBuffer: true,
+    alpha: true,
 });
 renderer.setSize(SCENE_SIZE / devicePixelRatio, SCENE_SIZE / devicePixelRatio);
 

@@ -34,6 +34,10 @@ button {
     outline: none;
 }
 
+button:active {
+    background-color: #777;
+}
+
 canvas {
     height: 512px;
     left: 512px;
@@ -51,6 +55,11 @@ select {
     padding: 4px;
     outline: none;
     -webkit-box-shadow: 0 0 2px #999;
+}
+
+select:focus {
+    background-color: white;
+    -webkit-box-shadow: 0 0 2px #DDD;
 }
 
 .CodeMirror {

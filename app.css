@@ -45,6 +45,7 @@ canvas {
     top: 0px;
     width: 512px;
     -webkit-box-shadow: 0 -50px 2px #999;
+    -webkit-transition: opacity .2s ease-in;
 }
 
 select {
@@ -52,6 +53,7 @@ select {
     border: none;
     border-radius: 2px;
     height: 28px;
+    min-width: 160px;
     padding: 4px;
     outline: none;
     -webkit-box-shadow: 0 0 2px #999;
@@ -68,6 +70,10 @@ select:focus {
     margin: 8px;
     width: 496px;
     z-index: 1;
+}
+
+.hidden {
+    opacity: .2;
 }
 
 .actions {

@@ -45,7 +45,6 @@ canvas {
     top: 0px;
     width: 512px;
     -webkit-box-shadow: 0 -50px 2px #999;
-    -webkit-transition: opacity .2s ease-in;
 }
 
 select {
@@ -74,6 +73,7 @@ select:focus {
 
 .hidden {
     opacity: .2;
+
 }
 
 .actions {
@@ -83,6 +83,10 @@ select:focus {
     text-align: center;
     width: 100%;
     z-index: 2;
+}
+
+.view {
+    -webkit-transition: opacity .2s ease-in;
 }
 
 #exportButton {

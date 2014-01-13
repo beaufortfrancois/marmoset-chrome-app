@@ -55,12 +55,15 @@ var renderer = new THREE.WebGLRenderer({
   antialias: true,
   preserveDrawingBuffer: true,
   alpha: true,
+  canvas: document.querySelector('canvas'),
 });
 renderer.setSize(SCENE_SIZE / devicePixelRatio, SCENE_SIZE / devicePixelRatio);
 
 var composer = new THREE.EffectComposer(renderer);
 
 var controls = new THREE.EditorControls(camera, renderer.domElement);
+
+var view = document.querySelector('.view');
 
 var activeShader = false;
 
@@ -177,16 +180,15 @@ var render = function () {
 
 var drawCodeTimeoutID = null;
 
-function drawCode() {
-  renderer.domElement.classList.add('hidden');
+function drawCode(showTransition) {
+  if (showTransition) {
+    view.classList.add('hidden');
+  }
   clearTimeout(drawCodeTimeoutID);
   setTimeout(function() {
-    var drawCodeTimeout = 500;
-    if (drawCodeTimeout === null ||
-      myCodeMirror.options.theme !== themeSelector.value ||
-      myCodeMirror.options.mode !== modeSelector.value) {
-        drawCodeTimeout = 0;
-    }
+    var noTimeout = (drawCodeTimeoutID === null ||
+                     myCodeMirror.options.theme !== themeSelector.value ||
+                     myCodeMirror.options.mode !== modeSelector.value)
     drawCodeTimeoutID = setTimeout(function () {
       myCodeMirror.setOption('mode', modeSelector.value);
       myCodeMirror.setOption('theme', themeSelector.value);
@@ -216,9 +218,9 @@ function drawCode() {
         object.position.y = object.position.y + lines.length / 2 * (font.size + offsetY);
         scene.add(object);
       }
-      renderer.domElement.classList.remove('hidden');
-    }, drawCodeTimeout);
-  }, 200); // Must be kept in sync with CSS Transition.
+      view.classList.remove('hidden');
+    }, noTimeout ? 0 : 500);
+  }, (drawCodeTimeoutID === null) ? 0 : 200); // Must be kept in sync with CSS Transition.
 }
 
 function dataURItoBlob(dataURI) {
@@ -321,7 +323,9 @@ function initEditor() {
       "Ctrl-S": exportCode
     });
     myCodeMirror.on('change', drawCode);
-    drawCode();
+    myCodeMirror.setOption('mode', modeSelector.value);
+    myCodeMirror.setOption('theme', themeSelector.value);
+    drawCode(false);
     initCamera();
   }
 
@@ -344,5 +348,4 @@ initModeSelector();
 initShaderSelector();
 initEditor();
 
-document.body.appendChild(renderer.domElement);
 render();

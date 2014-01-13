@@ -23,13 +23,14 @@ body {
 }
 
 button {
-    background-color: #EFEFEF;
-    border: 1px solid #999;
-    border-color: #999;
+    background-color: #999;
+    border: none;
     border-radius: 2px;
+    color: white;
+    font-weight: bold;
     height: 28px;
     margin: 0;
-    padding: 4px;
+    padding: 0 16px;
     outline: none;
 }
 
@@ -44,11 +45,12 @@ canvas {
 
 select {
     background-color: #EFEFEF;
-    border-color: #999;
+    border: none;
     border-radius: 2px;
     height: 28px;
     padding: 4px;
     outline: none;
+    -webkit-box-shadow: 0 0 2px #999;
 }
 
 .CodeMirror {

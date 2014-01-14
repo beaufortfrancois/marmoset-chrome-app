@@ -285,7 +285,7 @@ function initEditor() {
     shaderSelector.value = DEFAULT_SHADER;
     myCodeMirror = CodeMirror.fromTextArea(textarea);
     myCodeMirror.setOption('extraKeys', {
-      "Ctrl-S": exportCode
+      "Ctrl-S": saveCode
     });
     myCodeMirror.on('change', drawCode);
     myCodeMirror.setOption('mode', modeSelector.value);

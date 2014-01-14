@@ -100,33 +100,14 @@ var font = {
 }
 var sample = new THREE.TextGeometry('_', font);
 sample.computeBoundingBox();
-underscoreWidth = sample.boundingBox.max.x - sample.boundingBox.min.x;
+var underscoreWidth = sample.boundingBox.max.x - sample.boundingBox.min.x;
 
-var lastTextGeom = null;
-var marginLeft = null;
 var marginTop = 0;
-var x = 0;
 var lastMarginLeft = 0;
 var offsetX = underscoreWidth / 2 / 2;
 var offsetY = 2;
 var lastTextX = 0;
 var largestLineWidth = 0;
-
-function reset() {
-  largestLineWidth = 0;
-  lastTextX = 0;
-  lastTextGeom = null;
-  marginLeft = null;
-  marginTop = 0;
-  x = 0;
-  lastMarginLeft = 0;
-  while (scene.children.length > 0) {
-    scene.children[0].geometry.dispose();
-    scene.children[0].material.dispose();
-    scene.remove(scene.children[0]);
-  }
-  objects = [];
-}
 
 function howManyRightSpaces(text) {
   var numSpaces = 0;
@@ -138,7 +119,7 @@ function howManyRightSpaces(text) {
   return numSpaces;
 }
 
-function addText(text, color, isNewLine) {
+function computeTextBounds(text, color, isNewLine) {
   if (text.trim().length === 0) {
     if (isNewLine) {
       largestLineWidth = Math.max(lastMarginLeft, largestLineWidth);
@@ -146,12 +127,10 @@ function addText(text, color, isNewLine) {
       lastMarginLeft = 0;
     }
     lastMarginLeft += text.length * underscoreWidth;
-    return;
+    return false;
   }
 
-  var material = new THREE.MeshBasicMaterial({
-    color: color
-  });
+  var material = new THREE.MeshBasicMaterial({ color: color });
   var textGeom = new THREE.TextGeometry(text, font);
   var textMesh = new THREE.Mesh(textGeom, material);
   textGeom.computeBoundingBox();
@@ -162,27 +141,9 @@ function addText(text, color, isNewLine) {
     lastMarginLeft = 0;
   }
   lastTextX = textGeom.boundingBox.max.x;
-
   textMesh.position.set(lastMarginLeft, -marginTop, 0);
-  objects.push(textMesh);
-
   lastMarginLeft += howManyRightSpaces(text) * underscoreWidth + lastTextX + offsetX;
-}
-
-var render = function () {
-  requestAnimationFrame(render);
-  if (activeShader)
-    composer.render();
-  else
-    renderer.render(scene, camera);
-};
-
-
-function initCamera() {
-  camera.position.x = 70;
-  camera.position.y = 30;
-  camera.position.z = 130;
-  camera.lookAt(new THREE.Vector3(0, 0, 0));
+  return textMesh;
 }
 
 var drawCodeTimeoutID = null;
@@ -204,7 +165,17 @@ function drawCode(showTransition) {
       renderer.setClearColor(bgColor);
       document.body.style.backgroundColor = bgColor;
 
-      reset();
+      largestLineWidth = 0;
+      lastTextX = 0;
+      marginTop = 0;
+      lastMarginLeft = 0;
+      while (scene.children.length > 0) {
+        scene.children[0].geometry.dispose();
+        scene.children[0].material.dispose();
+        scene.remove(scene.children[0]);
+      }
+      objects = [];
+
       var lines = document.querySelectorAll('.CodeMirror-code pre');
       for (var i = 0; i < lines.length; i++) {
         for (var j = 0; j < lines[i].childNodes.length; j++) {
@@ -216,7 +187,9 @@ function drawCode(showTransition) {
             var text = node.innerText;
             var color = window.getComputedStyle(node).color;
           }
-          addText(text, color, (j === 0));
+          var textMesh = computeTextBounds(text, color, (j === 0));
+          if (textMesh)
+            objects.push(textMesh);
         }
       }
       for (var i = 0; i < objects.length; i++) {
@@ -228,6 +201,22 @@ function drawCode(showTransition) {
       view.classList.remove('hidden');
     }, noTimeout ? 0 : 500);
   }, (drawCodeTimeoutID === null) ? 0 : 200); // Must be kept in sync with CSS Transition.
+}
+
+var render = function () {
+  requestAnimationFrame(render);
+  if (activeShader)
+    composer.render();
+  else
+    renderer.render(scene, camera);
+};
+
+
+function initCamera() {
+  camera.position.x = 70;
+  camera.position.y = 30;
+  camera.position.z = 130;
+  camera.lookAt(new THREE.Vector3(0, 0, 0));
 }
 
 
@@ -274,7 +263,6 @@ function initShaderSelector() {
   }
   shaderSelector.addEventListener('change', applySelectedShader);
 }
-
 
 function initEditor() {
 

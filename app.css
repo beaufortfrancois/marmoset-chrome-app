@@ -13,7 +13,7 @@
 ::-webkit-scrollbar-thumb {
     background-color : white;
     border-radius: 2px;
-    -webkit-box-shadow: inset 0 0 2px rgba(0,0,0,0.3); 
+    box-shadow: inset 0 0 2px rgba(0,0,0,0.3);
 }
 
 body { 
@@ -44,7 +44,7 @@ canvas {
     position: absolute;
     top: 0px;
     width: 512px;
-    -webkit-box-shadow: 0 -50px 2px #999;
+    box-shadow: 0 -50px 2px #999;
 }
 
 select {
@@ -55,12 +55,12 @@ select {
     min-width: 160px;
     padding: 4px;
     outline: none;
-    -webkit-box-shadow: 0 0 2px #999;
+    box-shadow: 0 0 2px #999;
 }
 
 select:focus {
     background-color: white;
-    -webkit-box-shadow: 0 0 2px #DDD;
+    box-shadow: 0 0 2px #DDD;
 }
 
 .CodeMirror {
@@ -73,7 +73,6 @@ select:focus {
 
 .hidden {
     opacity: .2;
-
 }
 
 .actions {
@@ -86,7 +85,7 @@ select:focus {
 }
 
 .view {
-    -webkit-transition: opacity .2s ease-in;
+    transition: opacity .2s ease-in;
 }
 
 #saveButton {

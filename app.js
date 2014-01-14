@@ -178,6 +178,13 @@ var render = function () {
 };
 
 
+function initCamera() {
+  camera.position.x = 70;
+  camera.position.y = 30;
+  camera.position.z = 130;
+  camera.lookAt(new THREE.Vector3(0, 0, 0));
+}
+
 var drawCodeTimeoutID = null;
 
 function drawCode(showTransition) {
@@ -187,11 +194,11 @@ function drawCode(showTransition) {
   clearTimeout(drawCodeTimeoutID);
   setTimeout(function() {
     var noTimeout = (drawCodeTimeoutID === null ||
-                     myCodeMirror.options.theme !== themeSelector.value ||
-                     myCodeMirror.options.mode !== modeSelector.value)
+                     editor.options.theme !== themeSelector.value ||
+                     editor.options.mode !== modeSelector.value)
     drawCodeTimeoutID = setTimeout(function () {
-      myCodeMirror.setOption('mode', modeSelector.value);
-      myCodeMirror.setOption('theme', themeSelector.value);
+      editor.setOption('mode', modeSelector.value);
+      editor.setOption('theme', themeSelector.value);
       var bgColor = window.getComputedStyle(document.querySelector('.CodeMirror')).backgroundColor;
       var foregroundColor = window.getComputedStyle(document.querySelector('.CodeMirror')).color;
       renderer.setClearColor(bgColor);
@@ -268,12 +275,6 @@ function initShaderSelector() {
   shaderSelector.addEventListener('change', applySelectedShader);
 }
 
-function initCamera() {
-  camera.position.x = 70;
-  camera.position.y = 30;
-  camera.position.z = 130;
-  camera.lookAt(new THREE.Vector3(0, 0, 0));
-}
 
 function initEditor() {
 
@@ -283,13 +284,13 @@ function initEditor() {
     themeSelector.value = DEFAULT_THEME;
     modeSelector.value = 'javascript';
     shaderSelector.value = DEFAULT_SHADER;
-    myCodeMirror = CodeMirror.fromTextArea(textarea);
-    myCodeMirror.setOption('extraKeys', {
+    editor = CodeMirror.fromTextArea(textarea);
+    editor.setOption('extraKeys', {
       "Ctrl-S": saveCode
     });
-    myCodeMirror.on('change', drawCode);
-    myCodeMirror.setOption('mode', modeSelector.value);
-    myCodeMirror.setOption('theme', themeSelector.value);
+    editor.on('change', drawCode);
+    editor.setOption('mode', modeSelector.value);
+    editor.setOption('theme', themeSelector.value);
     drawCode(false);
     initCamera();
   }
@@ -306,7 +307,7 @@ function initEditor() {
   });
 }
 
-var myCodeMirror = null;
+var editor = null;
 
 initThemeSelector();
 initModeSelector();

@@ -3,26 +3,6 @@ var DEFAULT_SHADER = 'Normal';
 var SCENE_SIZE = 1024;
 var SHADERS = {
   'Normal': [],
-  'Vignette': [{
-    shader: THREE.VignetteShader,
-    uniforms: {
-      darkness: 1,
-      offset: 1.6
-    }
-  }],
-  'Tilt Shift': [{
-    shader: THREE.HorizontalTiltShiftShader,
-    uniforms: {
-      h: 3 / SCENE_SIZE,
-      r: 0.5
-    }
-  }, {
-    shader: THREE.VerticalTiltShiftShader,
-    uniforms: {
-      v: 3 / SCENE_SIZE,
-      r: 0.5
-    }
-  }],
   'Film': [{
     shader: THREE.FilmShader
   }],
@@ -44,7 +24,27 @@ var SHADERS = {
     uniforms: {
       amount: 1
     }
-  }]
+  }],
+  'Tilt Shift': [{
+    shader: THREE.HorizontalTiltShiftShader,
+    uniforms: {
+      h: 3 / SCENE_SIZE,
+      r: 0.5
+    }
+  }, {
+    shader: THREE.VerticalTiltShiftShader,
+    uniforms: {
+      v: 3 / SCENE_SIZE,
+      r: 0.5
+    }
+  }],
+  'Vignette': [{
+    shader: THREE.VignetteShader,
+    uniforms: {
+      darkness: 1,
+      offset: 1.6
+    }
+  }],
 };
 
 
@@ -118,8 +118,8 @@ function computeTextBounds(text, color, isNewLine) {
     lastMarginLeft += text.length * textWidth;
     return false;
   }
-  var material = new THREE.MeshBasicMaterial({ color: color });
   var textGeom = new THREE.TextGeometry(text, font);
+  var material = new THREE.MeshBasicMaterial({ color: color });
   var textMesh = new THREE.Mesh(textGeom, material);
   textMesh.position.set(lastMarginLeft, -marginTop, 0);
   lastMarginLeft += text.length * textWidth;
@@ -210,6 +210,11 @@ function initThemeSelector() {
     fs.getDirectory('lib/codemirror/theme', {}, function (themeDirectory) {
       var reader = themeDirectory.createReader();
       reader.readEntries(function (themeFiles) {
+        themeFiles.sort(function (a, b) {
+            if (a.name > b.name) return 1;
+            if (a.name < b.name) return -1;
+            return 0;
+        });
         for (var i = 0; i < themeFiles.length; i++) {
           var fileName = themeFiles[i].name;
           var themeName = fileName.replace('.css', '');
@@ -257,9 +262,9 @@ function initEditor() {
     editor.setOption('extraKeys', {
       "Ctrl-S": saveCode
     });
-    editor.on('change', drawCode);
     editor.setOption('mode', modeSelector.value);
     editor.setOption('theme', themeSelector.value);
+    editor.on('change', drawCode);
     drawCode(false);
     initCamera();
   }

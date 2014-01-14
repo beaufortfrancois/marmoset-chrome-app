@@ -169,12 +169,13 @@ function drawCode(showTransition) {
       lastTextX = 0;
       marginTop = 0;
       lastMarginLeft = 0;
+      objects = [];
+      // Deallocate old scene objects.
       while (scene.children.length > 0) {
         scene.children[0].geometry.dispose();
         scene.children[0].material.dispose();
         scene.remove(scene.children[0]);
       }
-      objects = [];
 
       var lines = document.querySelectorAll('.CodeMirror-code pre');
       for (var i = 0; i < lines.length; i++) {

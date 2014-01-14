@@ -89,7 +89,7 @@ select:focus {
     -webkit-transition: opacity .2s ease-in;
 }
 
-#exportButton {
+#saveButton {
     margin-left: 16px;
 }
 

@@ -1,7 +1,8 @@
 {
   "manifest_version": 2,
   "name": "Marmoset",
-  "version": "1",
+  "description": "Create gorgeous code snapshots.",
+  "version": "1.1",
   "requirements":  {
     "3D": {
       "features" : [ "webgl" ]

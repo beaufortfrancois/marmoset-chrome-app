@@ -106,7 +106,6 @@ var textHeight = sample.boundingBox.max.y - sample.boundingBox.min.y;
 
 var marginTop = 0;
 var lastMarginLeft = 0;
-var lastTextX = 0;
 var largestLineWidth = 0;
 
 function computeTextBounds(text, color, isNewLine) {
@@ -128,9 +127,8 @@ function computeTextBounds(text, color, isNewLine) {
     marginTop += textHeight;
     lastMarginLeft = 0;
   }
-  lastTextX = text.length * textWidth;
   textMesh.position.set(lastMarginLeft, -marginTop, 0);
-  lastMarginLeft += lastTextX;
+  lastMarginLeft += text.length * textWidth;
 
   return textMesh;
 }
@@ -155,7 +153,6 @@ function drawCode(showTransition) {
       document.body.style.backgroundColor = bgColor;
 
       largestLineWidth = 0;
-      lastTextX = 0;
       marginTop = 0;
       lastMarginLeft = 0;
       objects = [];

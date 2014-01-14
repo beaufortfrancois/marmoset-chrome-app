@@ -39,23 +39,23 @@ button:active {
 }
 
 canvas {
+    box-shadow: 0 -50px 2px #999;
     height: 512px;
     left: 512px;
     position: absolute;
     top: 0px;
     width: 512px;
-    box-shadow: 0 -50px 2px #999;
 }
 
 select {
     background-color: rgba(200, 200, 200, 0.9);
     border: none;
     border-radius: 2px;
+    box-shadow: 0 0 2px #999;
     height: 28px;
     min-width: 160px;
     padding: 4px;
     outline: none;
-    box-shadow: 0 0 2px #999;
 }
 
 select:focus {
@@ -85,6 +85,9 @@ select:focus {
 }
 
 .view {
+    left: 0px;
+    position: absolute;
+    top: 0px
     transition: opacity .2s ease-in;
 }
 

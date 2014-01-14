@@ -99,10 +99,8 @@ var font = {
   font: "cousine",
 }
 
-var sample = new THREE.TextGeometry('█', font);
-sample.computeBoundingBox();
-var textWidth = sample.boundingBox.max.x - sample.boundingBox.min.x;
-var textHeight = sample.boundingBox.max.y - sample.boundingBox.min.y;
+var textWidth = 3.336;
+var textHeight = 6.292;
 
 var largestLineWidth = 0;
 var lastMarginLeft = 0;

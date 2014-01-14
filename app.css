@@ -2,7 +2,7 @@
   font-family: 'Cousine';
   font-style: normal;
   font-weight: 400;
-  src: local('/fonts/Cousine.woff') format('woff');
+  src: local('Cousine'), url('fonts/Cousine.woff') format('woff');
 }
 
 ::-webkit-scrollbar {

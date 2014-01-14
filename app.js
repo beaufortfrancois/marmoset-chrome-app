@@ -104,29 +104,23 @@ sample.computeBoundingBox();
 var textWidth = sample.boundingBox.max.x - sample.boundingBox.min.x;
 var textHeight = sample.boundingBox.max.y - sample.boundingBox.min.y;
 
-var marginTop = 0;
-var lastMarginLeft = 0;
 var largestLineWidth = 0;
+var lastMarginLeft = 0;
+var marginTop = 0;
 
 function computeTextBounds(text, color, isNewLine) {
-  if (text.trim().length === 0) {
-    if (isNewLine) {
-      largestLineWidth = Math.max(lastMarginLeft, largestLineWidth);
+  if (isNewLine) {
       marginTop += textHeight;
+      largestLineWidth = Math.max(lastMarginLeft, largestLineWidth);
       lastMarginLeft = 0;
-    }
+  }
+  if (text.trim().length === 0) {
     lastMarginLeft += text.length * textWidth;
     return false;
   }
-
   var material = new THREE.MeshBasicMaterial({ color: color });
   var textGeom = new THREE.TextGeometry(text, font);
   var textMesh = new THREE.Mesh(textGeom, material);
-  if (isNewLine) {
-    largestLineWidth = Math.max(lastMarginLeft, largestLineWidth);
-    marginTop += textHeight;
-    lastMarginLeft = 0;
-  }
   textMesh.position.set(lastMarginLeft, -marginTop, 0);
   lastMarginLeft += text.length * textWidth;
 
@@ -153,8 +147,8 @@ function drawCode(showTransition) {
       document.body.style.backgroundColor = bgColor;
 
       largestLineWidth = 0;
-      marginTop = 0;
       lastMarginLeft = 0;
+      marginTop = 0;
       objects = [];
       // Deallocate old scene objects.
       while (scene.children.length > 0) {

@@ -98,51 +98,40 @@ var font = {
   curveSegments: 4,
   font: "cousine",
 }
-var sample = new THREE.TextGeometry('_', font);
+
+var sample = new THREE.TextGeometry('█', font);
 sample.computeBoundingBox();
-var underscoreWidth = sample.boundingBox.max.x - sample.boundingBox.min.x;
+var textWidth = sample.boundingBox.max.x - sample.boundingBox.min.x;
+var textHeight = sample.boundingBox.max.y - sample.boundingBox.min.y;
 
 var marginTop = 0;
 var lastMarginLeft = 0;
-var offsetX = underscoreWidth / 2 / 2;
-var offsetY = 2;
 var lastTextX = 0;
 var largestLineWidth = 0;
-
-function howManyRightSpaces(text) {
-  var numSpaces = 0;
-  var index = text.length - 1;
-  while (text[index] === ' ') {
-    numSpaces++;
-    index--;
-  }
-  return numSpaces;
-}
 
 function computeTextBounds(text, color, isNewLine) {
   if (text.trim().length === 0) {
     if (isNewLine) {
       largestLineWidth = Math.max(lastMarginLeft, largestLineWidth);
-      marginTop += font.size + offsetY;
+      marginTop += textHeight;
       lastMarginLeft = 0;
     }
-    lastMarginLeft += text.length * underscoreWidth;
+    lastMarginLeft += text.length * textWidth;
     return false;
   }
 
   var material = new THREE.MeshBasicMaterial({ color: color });
   var textGeom = new THREE.TextGeometry(text, font);
   var textMesh = new THREE.Mesh(textGeom, material);
-  textGeom.computeBoundingBox();
-
   if (isNewLine) {
     largestLineWidth = Math.max(lastMarginLeft, largestLineWidth);
-    marginTop += font.size + offsetY;
+    marginTop += textHeight;
     lastMarginLeft = 0;
   }
-  lastTextX = textGeom.boundingBox.max.x;
+  lastTextX = text.length * textWidth;
   textMesh.position.set(lastMarginLeft, -marginTop, 0);
-  lastMarginLeft += howManyRightSpaces(text) * underscoreWidth + lastTextX + offsetX;
+  lastMarginLeft += lastTextX;
+
   return textMesh;
 }
 
@@ -196,7 +185,7 @@ function drawCode(showTransition) {
       for (var i = 0; i < objects.length; i++) {
         var object = objects[i];
         object.position.x = object.position.x - largestLineWidth / 2;
-        object.position.y = object.position.y + lines.length / 2 * (font.size + offsetY);
+        object.position.y = object.position.y + lines.length / 2 * textHeight;
         scene.add(object);
       }
       view.classList.remove('hidden');

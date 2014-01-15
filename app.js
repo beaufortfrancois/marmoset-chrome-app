@@ -1,5 +1,6 @@
 var DEFAULT_THEME = 'monokai';
 var DEFAULT_SHADER = 'Normal';
+var DEFAULT_ZOOM = 130;
 var SCENE_SIZE = 1024;
 var SHADERS = {
   'Normal': [],
@@ -106,12 +107,7 @@ var largestLineWidth = 0;
 var lastMarginLeft = 0;
 var marginTop = 0;
 
-function computeTextBounds(text, color, isNewLine) {
-  if (isNewLine) {
-      marginTop += textHeight;
-      largestLineWidth = Math.max(lastMarginLeft, largestLineWidth);
-      lastMarginLeft = 0;
-  }
+function computeTextBounds(text, color) {
   if (text.trim().length === 0) {
     lastMarginLeft += text.length * textWidth;
     return false;
@@ -166,10 +162,13 @@ function drawCode(showTransition) {
             var text = node.innerText;
             var color = window.getComputedStyle(node).color;
           }
-          var textMesh = computeTextBounds(text, color, (j === 0));
+          var textMesh = computeTextBounds(text, color);
           if (textMesh)
             objects.push(textMesh);
         }
+        marginTop += textHeight;
+        largestLineWidth = Math.max(lastMarginLeft, largestLineWidth);
+        lastMarginLeft = 0;
       }
       for (var i = 0; i < objects.length; i++) {
         var object = objects[i];
@@ -191,10 +190,14 @@ var render = function () {
 };
 
 
-function initCamera() {
-  camera.position.x = 70;
-  camera.position.y = 30;
-  camera.position.z = 130;
+function resetCamera() {
+  setCamera(0, 0, DEFAULT_ZOOM);
+}
+
+function setCamera(x, y, z) {
+  camera.position.x = x;
+  camera.position.y = y;
+  camera.position.z = z;
   camera.lookAt(new THREE.Vector3(0, 0, 0));
 }
 
@@ -258,13 +261,14 @@ function initEditor() {
     shaderSelector.value = DEFAULT_SHADER;
     editor = CodeMirror.fromTextArea(textarea);
     editor.setOption('extraKeys', {
-      "Ctrl-S": saveCode
+      "Ctrl-0": resetCamera,
+      "Ctrl-S": saveCode,
     });
     editor.setOption('mode', modeSelector.value);
     editor.setOption('theme', themeSelector.value);
     editor.on('change', drawCode);
     drawCode(false);
-    initCamera();
+    setCamera(70, 30, DEFAULT_ZOOM);
   }
 
   // Retrieve content from background file and display it.

@@ -162,6 +162,9 @@ function drawCode(showTransition) {
             var text = node.innerText;
             var color = window.getComputedStyle(node).color;
           }
+          if (j === lines[i].childNodes.length - 1) {
+            text = text.trimRight();
+          }
           var textMesh = computeTextBounds(text, color);
           if (textMesh)
             objects.push(textMesh);
